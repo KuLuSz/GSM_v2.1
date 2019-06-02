@@ -1,0 +1,27 @@
+Info for translating this file:
+STRING OF MENU="Translated text"		# Translation comment of localisation
+
+Elements to be translated:
+QUIT=""						# Close menu
+SAVE=""						# Save
+LEFT=""						# Left
+RIGHT=""					# Right
+TOP=""						# Top
+BOTTOM=""					# Bottom
+ILOCK=""					# Icon lock
+TAB_ORIENT=""				# Placement of tabs
+ISIZE=""					# Icon size
+WINDOW_SIZE=""				# Window size
+BG=""						# Backgrounds
+FC=""						# Font color
+FCB=""						# Black
+FCW=""						# White
+MENU_POS=""					# Menu position
+CENTER=""					# Center
+FSCREEN=""					# Full screen
+CUSTOM=""					# Custom
+FROM_LEFT=""				# From left
+FROM_TOP=""					# From top
+AUTO_START=""				# Auto start
+EMPTY_DIR=""				# Empty dir! (drop some .desktop file to the dir)
+EXTRA=""					# EXTRA: You can make more tab of the menu, just make some dir in (gsm base dir)/tabs dir, then drop some .desktop file to dirs.

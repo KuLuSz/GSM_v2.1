@@ -1,0 +1,243 @@
+# gtkrc FlatBlueContrast theme, Barry Kauler 2011
+
+style "default"
+{
+# for gtk2...
+#font_name="DejaVu Sans 8"
+  
+	fg[NORMAL]= "#ffffff"		# kiválasztott / alap szöveg
+	fg[ACTIVE]= "#ffffff"		# inaktív tab
+	base[NORMAL]= "#53709F"		# combobox háttér
+	bg[NORMAL]= "#000000"		# tooltip háttere
+
+  engine "pixmap" { 
+      image
+    {
+      function          = FOCUS
+      file              = "null.png"
+      border            = { 1, 1, 1, 1 }
+      stretch           = TRUE
+    }
+  }
+}
+
+style "notebook"		= "default"
+{
+  engine "pixmap" 
+    {
+    image 
+      {
+     function				= EXTENSION
+	state				= ACTIVE
+	file				= "tab2.png"
+	border				= { 4,4,4,4}
+	stretch				= TRUE
+	gap_side			= TOP
+      }
+    image 
+      {
+     function				= EXTENSION
+	state				= ACTIVE
+	file				= "tab2.png"
+	border				= {  4,4,4,4}
+	stretch				= TRUE
+	gap_side			= BOTTOM
+      }
+    image 
+      {
+     function				= EXTENSION
+	state				= ACTIVE
+	file				= "tab2.png"
+	border				= {  4,4,4,4}
+	stretch				= TRUE
+	gap_side			= RIGHT
+      }
+    image 
+      {
+     function				= EXTENSION
+	state				= ACTIVE
+	file				= "tab2.png"
+	border				= { 4,4,4,4}
+	stretch				= TRUE
+	gap_side			= LEFT
+      }	
+    image 
+      {
+     function				= EXTENSION
+	file				= "tab1.png"
+	border				= { 4,4,4,4}
+	stretch				= TRUE
+	gap_side			= BOTTOM
+      }
+    image 
+      {
+     function				= EXTENSION
+	file				= "tab1.png"
+	border				= { 4,4,4,4}
+	stretch				= TRUE
+	gap_side			= TOP
+      }
+    image 
+      {
+     function				= EXTENSION
+	file				= "tab1.png"
+	border				= {  4,4,4,4}
+	stretch				= TRUE
+	gap_side			= RIGHT
+      }
+    image 
+      {
+     function				= EXTENSION
+	file				= "tab1.png"
+	border				= {  4,4,4,4}
+	stretch				= TRUE
+	gap_side			= LEFT
+      }
+
+    image 
+      {
+     function				= BOX_GAP
+	file				= "tab2.png" 
+	border				= { 5, 5, 5, 5 }
+	stretch				= TRUE
+	gap_file			= "null.png"
+	gap_border     			= { 0, 0, 0, 0 }
+	gap_start_file			= "null.png"
+	gap_start_border		= { 0, 0, 0, 0 }
+	gap_end_file			= "null.png"
+	gap_end_border			= { 0, 0, 0, 0 }
+	gap_side			= TOP
+      }
+    image 
+      {
+     function				= BOX_GAP
+	file				= "tab2.png"
+	border				= { 5, 5, 5, 5 }
+	stretch				= TRUE
+	gap_file			= "null.png"
+	gap_border			= { 10, 10,5, 5 }
+	gap_start_file			= "null.png"
+	gap_start_border		= { 10, 10, 5, 5 }
+	gap_end_file			= "null.png"
+	gap_end_border			= { 10, 10, 5, 5 }
+	gap_side			= BOTTOM
+      }
+    image 
+      {
+     function				= BOX_GAP
+	file				= "tab2.png"
+	border				= { 5, 5, 5, 5 }
+	stretch				= TRUE
+	gap_file			= "null.png"
+	gap_border			= { 0, 1, 0, 0 }
+	gap_start_file			= "null.png"
+	gap_start_border		= { 0, 0, 2, 0 }
+	gap_end_file			= "null.png"
+	gap_end_border			= { 0, 2, 1, 0 }
+	gap_side			= LEFT
+      }
+    image 
+      {
+     function				= BOX_GAP
+	file				= "tab2.png" 
+	border				= { 5, 5, 5, 5 }
+	stretch				= TRUE
+	gap_file			= "null.png"
+	gap_border			= { 0, 0, 1, 0 }
+	gap_start_file			= "null.png"
+	gap_start_border		= { 2, 0, 2, 0 }
+	gap_end_file			= "null.png"
+	gap_end_border			= { 0, 0, 0, 2 }
+	gap_side			= RIGHT
+      }
+
+    image 
+      {
+     function				= BOX
+	file				= "tab2.png"
+	border				= { 6,6,6,6 }
+	stretch				= TRUE
+	#gap_side			= TOP
+      }
+  }
+}
+
+
+style "button"
+{
+
+  engine "pixmap" 
+    {
+
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+	state           = NORMAL
+#shadow          = IN
+	file            = "tab2.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+	state		= INSENSITIVE
+	file            = "tab2.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+	state		= PRELIGHT
+	file            = "tab1.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+	state		= ACTIVE
+	file            = "tab1.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+	shadow 		= IN
+	state		= SELECTED
+	file            = "tab1.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+#	shadow 		= IN
+	state		= SELECTED
+	file            = "tab2.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+
+    image 
+      {
+        function        = BOX
+	recolorable     = TRUE
+	file            = "tab2.png"
+	border          = { 6,6,6,6 }
+	stretch         = TRUE
+      }
+   }
+}
+
+class "GtkWidget" style "default"
+class "GtkNotebook" style "notebook"
+class "GtkButton" style "button"

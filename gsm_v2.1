@@ -1,0 +1,355 @@
+#!/bin/sh
+# Made by KuLuSz from previous gsm_v2 gui for custom tabs/icons at 2019 05 31
+# Added gsm_v2 menu settings tab for setting perfect design of user
+# Can set icon size, tab position, backround,font color theme of menu
+
+BASE_DIR=$(dirname $0 | sed 's/ /\\ /g' )
+LANGUIN="$(echo "$LANG" | cut -c1,2)"
+if [ -e $BASE_DIR/locale/$LANGUIN ];then
+ . "$BASE_DIR"/locale/$LANGUIN
+ else
+ . "$BASE_DIR"/locale/en
+fi
+
+SD="$BASE_DIR/settings"
+[ ! -d $SD ]&& mkdir -p $SD
+[ ! -d $BASE_DIR/gui ]&& mkdir -p $BASE_DIR/gui 
+[ ! -d $BASE_DIR/tabs/ ]&& mkdir -p $BASE_DIR/tabs/
+[ ! -e $SD/tab_position ]&& echo "0" > $SD/tab_position
+[ ! -e $SD/tab_position2 ]&& echo "$LEFT" > $SD/tab_position2
+[ ! -e $SD/icon_size ]&& echo "48" > $SD/icon_size
+[ ! -e $SD/font_color ]&& echo "$FCB" > $SD/font_color
+[ ! -e $SD/gtk_fc ]&& echo "gtkrc" > $SD/gtk_fc
+[ ! -e $SD/win_pos ]&& echo "CENTER|0|0|700x400" > $SD/win_pos
+[ ! -e $SD/i_pos ]&& echo "$LEFT" > $SD/i_pos
+[ ! -e $BASE_DIR/Theme/gtk-2.0/tab2.png ]&& ln -sf $BASE_DIR/Theme/gtk-2.0/bg/l-w.png $BASE_DIR/Theme/gtk-2.0/tab2.png
+
+TAB_POSITION=$(cat $SD/tab_position)
+TAB_POSITION2=$(cat $SD/tab_position2)
+ICON_SIZE=$(cat $SD/icon_size)
+FCOL=$(cat $SD/font_color)
+GTKRCFILE=$(cat $SD/gtk_fc)
+SYS_GTK_THEME=$(cat /root/.gtkrc-2.0 | grep include | grep '/gtkrc' | cut -f5 -d'/')
+SYSTHEME="export GTK2_RC_FILES=/usr/share/themes/$SYS_GTK_THEME/gtk-2.0/gtkrc"
+WIN_POS=$(cat $SD/win_pos | cut -f1 -d'|')
+LPOS=$(cat $SD/win_pos | cut -f2 -d'|')
+TPOS=$(cat $SD/win_pos | cut -f3 -d'|')
+WIN_SIZE=$(cat $SD/win_pos | cut -f4 -d'|')
+I_POS=$(cat $SD/i_pos)
+WWS=$(echo $WIN_SIZE | cut -f1 -d'x')
+WHS=$(echo $WIN_SIZE | cut -f2 -d'x')
+ICENTER="$CENTER"
+
+IMATRIX="$ICON_SIZE"
+AT=' active="true"'
+ICON_PATH="/usr/share/pixmaps/"
+[ -f /root/Startup/$(basename $0) ]&& AA="$AT" || AA=''
+[ -e "$BASE_DIR"/gui/programs.gui ]&& rm $BASE_DIR/gui/programs.gui
+[ -e $SD/dir_list ]&& rm $SD/dir_list
+for dir in `ls $BASE_DIR/tabs`;do
+ if [ -d $BASE_DIR/tabs/$dir ];then
+  echo "$dir" >> $SD/dir_list
+   if [ "$(ls $BASE_DIR/tabs/$dir | grep '\.desktop$')" ];then
+    CNT=0
+    CNT_REV=$(ls $BASE_DIR/tabs/$dir | grep -c '\.desktop$')
+    if [ "$CNT_REV" -lt "5" ];then # Ikonok elosztása
+     CNT_DEF=2
+    elif [ "$CNT_REV" -le "9" ];then
+     CNT_DEF=3
+    elif [ "$CNT_REV" -le "12" ];then
+     CNT_DEF=4
+    elif [ "$CNT_REV" -le "15" ];then
+     CNT_DEF=5
+    elif [ "$CNT_REV" -le "18" ];then
+     CNT_DEF=6
+    elif [ "$CNT_REV" -le "21" ];then
+     CNT_DEF=7
+    elif [ "$CNT_REV" -le "24" ];then
+     CNT_DEF=8
+    elif [ "$CNT_REV" -le "27" ];then
+     CNT_DEF=9
+    elif [ "$CNT_REV" -ge "30" -a "$CNT_REV" -lt "30" ];then
+     CNT_DEF=9
+    fi 
+     echo "  <vbox homogeneous=\"true\" spacing=\"$IMATRIX\">
+    <hbox homogeneous=\"true\">" >> "$BASE_DIR"/gui/programs.gui
+    for dfile in `ls $BASE_DIR/tabs/$dir | grep '\.desktop$'`;do
+     dfile="$BASE_DIR/tabs/$dir/$dfile"
+     if [ "$(cat $dfile | grep Name | cut -f1 -d'=' | grep $LANGUIN)" ];then
+      NAME="$(cat $dfile | grep Name | grep $LANGUIN | cut -f2 -d'=')"
+     else
+      NAME="$(cat $dfile | grep 'Name=' | grep -v Generic | cut -f2 -d'=')"
+     fi
+     ICON="$(cat $dfile | grep Icon | cut -f2 -d'=')"
+     if [ ! "$(echo "$ICON" | grep 'png\|svg\|xpm\|jpg')" ];then # ikon kiterjesztés ellenörzés
+      ICON="$(find $ICON_PATH -name "*$ICON*")"
+     fi
+     if [ ! "$(echo "$ICON" | grep '/')" ];then
+      ICON=$ICON_PATH$ICON
+     fi
+     EXEC="$(cat $dfile | grep Exec | cut -f2 -d'=')"
+     echo "     <button tooltip-text=\"$NAME\">
+      <height>\"$IMATRIX\"</height>
+      <width>\"$IMATRIX\"</width>
+      <input file>$ICON</input>
+      <action>$SYSTHEME && $EXEC &</action>
+     </button>"  >> "$BASE_DIR"/gui/programs.gui
+     CNT=$(expr $CNT + 1)
+     CNT_REV=$(expr $CNT_REV - 1)
+     if [ "$CNT" -eq "$CNT_DEF" -a "$CNT_REV" -ne "0" ];then
+      echo "   </hbox>
+   <hbox homogeneous=\"true\">" >> "$BASE_DIR"/gui/programs.gui
+      if [ "$I_POS" == "$RIGHT" ];then
+       if [ ! `echo $(expr $CNT_DEF - $CNT_REV) | grep '-'` ];then
+       SZAM=$(expr $CNT_DEF - $CNT_REV)
+       while [ $SZAM -ne "0" ];do
+        echo "     <pixmap>
+      <height>$IMATRIX</height>
+      <width>$IMATRIX</width>
+      <input file>$BASE_DIR/Theme/gtk-2.0/null.png</input>
+     </pixmap>" >> "$BASE_DIR"/gui/programs.gui
+       SZAM=$(expr $SZAM - 1)
+       done
+       fi
+      fi
+     CNT=0
+     fi
+    done
+    if [ "$I_POS" == "$LEFT" ];then
+     while [ `expr $CNT_DEF - $CNT` -ne "0" ];do
+     echo "     <pixmap>
+      <height>$IMATRIX</height>
+      <width>$IMATRIX</width>
+      <input file>$BASE_DIR/Theme/gtk-2.0/null.png</input>
+     </pixmap>" >> "$BASE_DIR"/gui/programs.gui
+     CNT=$(expr $CNT + 1)
+     done
+    fi
+    echo "   </hbox>
+  </vbox>" >> "$BASE_DIR"/gui/programs.gui
+   else
+    echo "  <vbox homogeneous=\"true\" spacing=\"$IMATRIX\">
+    <hbox homogeneous=\"true\">
+    <text><label>$EMPTY_DIR</label></text> 
+      </hbox>
+  </vbox>" >> "$BASE_DIR"/gui/programs.gui
+   fi
+ fi
+done
+#TABS=$(cat $SD/dir_list | tr "\n" "|" | sed 's/.$//')
+TABS=$(cat $SD/dir_list | tr "\n" "|")
+PROGS=$(cat $BASE_DIR/gui/programs.gui)
+
+A1=''
+A2=''
+A3=''
+HOMO=' space-fill="false" space-expand="true"'
+if [ "$WIN_POS" == "CENTER" ];then
+ WINDOW_POSITION="--center --geometry $WIN_SIZE"
+ A1=$AT
+elif [ "$WIN_POS" == "FULLSCREEN" ];then
+ WIN_SIZE=$(cat $SD/full_win_pos | cut -f4 -d'|')
+ LPOS=$(cat $SD/full_win_pos | cut -f2 -d'|')
+ TPOS=$(cat $SD/full_win_pos | cut -f3 -d'|')
+ WINDOW_POSITION="--geometry $WIN_SIZE+$LPOS+$TPOS"
+ HOMO=' homogeneous="true"'
+ A2=$AT
+elif [ "$WIN_POS" == "CUSTOM" ];then
+ WINDOW_POSITION="--geometry $WIN_SIZE+$LPOS+$TPOS"
+ A3=$AT
+fi
+
+[ -e "$BASE_DIR"/gui/bg_rbs.gui ]&& rm "$BASE_DIR"/gui/bg_rbs.gui
+CNT=0
+CNT_REV=$(ls $BASE_DIR/Theme/gtk-2.0/bg/ | grep -c .)
+for bg in $(ls $BASE_DIR/Theme/gtk-2.0/bg/);do
+ echo "       <button>
+        <height>16</height>
+        <width>16</width>
+        <input file>$BASE_DIR/Theme/gtk-2.0/bg/$bg</input>
+        <action>ln -sf $BASE_DIR/Theme/gtk-2.0/bg/$bg $BASE_DIR/Theme/gtk-2.0/tab2.png &</action>
+        <action>exit:$SAVE</action>
+       </button>" >> "$BASE_DIR"/gui/bg_rbs.gui
+ CNT=$(expr $CNT + 1)
+ CNT_REV=$(expr $CNT_REV - 1)
+ if [ "$CNT" == "8" -a "$CNT_REV" -ne "0" ];then
+  echo "   </hbox>
+   <hbox$HOMO>" >> "$BASE_DIR"/gui/bg_rbs.gui
+  CNT=0
+ fi 
+
+done
+BG_RBS="$(cat "$BASE_DIR"/gui/bg_rbs.gui)"
+
+export gsm_v2='
+<vbox space-fill="true" space-expand="true" resizable="true">
+ <notebook labels="'$TABS'GSM_v2.1" tab-pos="'$TAB_POSITION'" page="0">
+  '$PROGS'
+  <vbox homogeneous="true" tooltip-text="'$EXTRA'">
+   <hbox homogeneous="true"><text use-markup="true"><label>"<b>GTK Start Menu v2.1</b> - Created by <b>KuLuSz</b> (Hungary)"</label></text></hbox>
+
+     <hbox'$HOMO'>
+      <hbox>
+      <text><label> '$FC':</label></text> 
+      <combobox width-request="80"><variable>FONT</variable>
+       <item>'$FCOL'</item>
+       <item>'$FCB'</item>       
+       <item>'$FCW'</item>
+      </combobox> 
+     </hbox>
+     <hbox>
+     <text><label>'$TAB_ORIENT':</label></text>    
+      <combobox width-request="80">       <variable>TABO</variable>
+       <item>'$TAB_POSITION2'</item>
+       <item>'$LEFT'</item>       
+       <item>'$RIGHT'</item>
+       <item>'$TOP'</item>
+       <item>'$BOTTOM'</item>
+      </combobox>
+      </hbox>
+      <hbox>
+      <text><label>'$ISIZE':</label></text>    
+       <combobox width-request="50"><variable>ICON</variable>
+        <item>'$ICON_SIZE'</item>
+        <item>48</item>       
+        <item>24</item>
+       </combobox>
+      </hbox>
+      </hbox>
+
+      <vbox>
+      <hbox'$HOMO'>
+       <text><label> '$MENU_POS':</label></text>
+       <radiobutton'$A1'>
+        <label>'$CENTER'</label>
+        <variable>CENTER</variable>
+        <action>if true enable:WWS</action>
+        <action>if true enable:WHS</action>
+       </radiobutton>
+       <radiobutton'$A2'>
+        <label>'$FSCREEN'</label>
+        <variable>FULLSCREEN</variable>
+        <action>if true disable:WWS</action>
+        <action>if true disable:WHS</action>
+       </radiobutton>
+       <radiobutton'$A3'>
+        <label>'$CUSTOM'</label>
+        <variable>CUSTOM</variable>
+        <action>if true enable:WWS</action>
+        <action>if true enable:WHS</action>
+        <action>if true enable:LEFT_POS</action>
+        <action>if true enable:TOP_POS</action>
+        <action>if false disable:LEFT_POS</action>
+        <action>if false disable:TOP_POS</action>       
+       </radiobutton>
+      </hbox>
+      <hbox'$HOMO'>
+       <hbox>
+       <text><label>'$WINDOW_SIZE':</label></text>
+       <entry width-request="40" max-length="4" width="4" space-expand="false" space-fill="false">
+        <default>'$WWS'</default>
+        <variable>WWS</variable>
+       </entry>
+       <text><label>x</label></text>
+       <entry width-request="40" max-length="4" width="4" space-expand="false" space-fill="false">
+        <default>'$WHS'</default>
+        <variable>WHS</variable>
+       </entry>
+       </hbox>
+       <hbox>
+       <text><label>'$FROM_LEFT':</label></text>
+       <entry width-request="40" max-length="4" width="4" space-expand="false" space-fill="false">
+        <default>'$LPOS'</default>
+        <variable>LEFT_POS</variable>
+        <visible>disabled</visible>
+       </entry>       
+       <text><label>'$FROM_TOP':</label></text>
+       <entry width-request="40" max-length="4" width="4" space-expand="false" space-fill="false">
+        <default>'$TPOS'</default>
+        <variable>TOP_POS</variable>
+        <visible>disabled</visible>
+       </entry>
+       </hbox>
+      </hbox>
+      </vbox>
+
+     <hbox'$HOMO'>
+      <hbox>
+      <text><label> '$ILOCK':</label></text> 
+      <combobox width-request="100"><variable>ICON_LOCK</variable>
+       <item>'$I_POS'</item>
+       <item>'$ICENTER'</item>
+       <item>'$LEFT'</item>       
+       <item>'$RIGHT'</item>
+      </combobox>
+      </hbox>
+      <hbox>
+      <checkbox'$AA'>
+       <label>'$AUTO_START'</label>
+       <default>false</default>
+       <variable>AUTO</variable>
+      </checkbox>
+      </hbox>
+     </hbox>
+
+      <hbox'$HOMO'>
+       <text><label> '$BG':</label></text>
+       '$BG_RBS'
+      </hbox>
+
+    <hbox homogeneous="true">
+     <button><label>'$SAVE'</label></button>
+     <button><label>'$QUIT'</label></button>
+    </hbox>
+  </vbox>
+ </notebook>
+</vbox>'
+
+export GTK2_RC_FILES=$BASE_DIR/Theme/gtk-2.0/"$GTKRCFILE"
+eval `gtkdialog --program=gsm_v2 --gtk-module=gtk2desklet $WINDOW_POSITION`
+if [ "$EXIT" == "$SAVE" ];then
+ [ "$TABO" == "$LEFT" ]&& TABO="0" && echo "$LEFT" > $SD/tab_position2
+ [ "$TABO" == "$RIGHT" ]&& TABO="1" && echo "$RIGHT" > $SD/tab_position2
+ [ "$TABO" == "$TOP" ]&& TABO="2" && echo "$TOP" > $SD/tab_position2
+ [ "$TABO" == "$BOTTOM" ]&& TABO="3" && echo "$BOTTOM" > $SD/tab_position2
+ [ "$TABO" != "$TAB_POSITION" ]&& echo "$TABO" > $SD/tab_position
+ [ "$ICON" != "$ICON_SIZE" ]&& echo "$ICON" > $SD/icon_size && touch $SD/update
+ if [ "$FONT" == "$FCB" ];then
+  echo "gtkrc" > $SD/gtk_fc
+  echo "$FCB" > $SD/font_color
+ else
+  echo "gtkrc-wf" > $SD/gtk_fc
+  echo "$FCW" > $SD/font_color
+ fi
+ if [ "$CENTER" == "true" ];then
+  echo "CENTER|$LEFT_POS|$TOP_POS|${WWS}x$WHS" > $SD/win_pos
+ elif [ "$FULLSCREEN" == "true" ];then
+  LPOS=$(xprop -root |grep 'WORKAREA(' | cut -f2 -d'=' | cut -f1 -d',' | sed 's/ //')
+  TPOS=$(xprop -root |grep 'WORKAREA(' | cut -f2 -d'=' | cut -f2 -d',' | sed 's/ //')
+  W=$(xprop -root |grep 'WORKAREA(' | cut -f2 -d'=' | cut -f3 -d',' | sed 's/ //')
+  H=$(xprop -root |grep 'WORKAREA(' | cut -f2 -d'=' | cut -f4 -d',' | sed 's/ //')
+  echo "FULLSCREEN|$LPOS|$TPOS|${W}x$H" > $SD/full_win_pos
+  echo "FULLSCREEN|$LEFT_POS|$TOP_POS|${WWS}x$WHS" > $SD/win_pos
+ elif [ "$CUSTOM" == "true" ];then
+  echo "CUSTOM|$LEFT_POS|$TOP_POS|${WWS}x$WHS" > $SD/win_pos
+ fi
+ if [ "$AUTO" == "true" ];then
+  if [ ! -f /root/Startup/$(basename $0) ];then
+   echo "#!/bin/sh
+   sleep 1 && $0 &" > /root/Startup/$(basename $0)
+   chmod 777 /root/Startup/$(basename $0)
+  fi
+ else
+  [ -f /root/Startup/$(basename $0) ]&& rm /root/Startup/$(basename $0)
+ fi
+ if [ "$ICON_LOCK" == "$ICENTER" ];then
+  echo "$ICENTER" > $SD/i_pos
+ elif [ "$ICON_LOCK" == "$LEFT" ];then
+  echo "$LEFT" > $SD/i_pos
+ elif [ "$ICON_LOCK" == "$RIGHT" ];then
+  echo "$RIGHT" > $SD/i_pos
+ fi
+ "$0" && exit
+elif [ "$EXIT" == "$QUIT" ];then
+ exit
+fi

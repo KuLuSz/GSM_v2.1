@@ -1,0 +1,20 @@
+
+ --- GSM_v2 --- GTK Start Menu version 2.1
+ --- Created by KuLuSz
+
+ Note: This gui build of custom tabs from the previous gsm_v2 idea.
+ 
+ Dependent stuffs:  - jwm-xdgmenu command
+					- gtk2desklet package
+
+ --- Tabs folder:
+		If you want other tabs in gsm_v2.1 menu, make some folder in tabs folder,
+		then drop there (copy or link) some .desktop file.
+		
+		Desktop files are in: /usr/share/applications/
+		Wine desktop files are in: /root/.local/share/applications/wine/Programs/
+		
+ --- Locale folder:
+		Locale folder store of language support files. If you want add new language just 
+		make simple text file from empty lang file,
+		then save as your lang ex: hu , en , gb ,jp

@@ -1,0 +1,26 @@
+#elements to be translated:
+
+QUIT="Close menu"									# Close menu
+SAVE="Save"											# Save
+LEFT="Left"											# Left
+RIGHT="Right"										# Right
+TOP="Top"											# Top
+BOTTOM="Bottom"										# Bottom
+ILOCK="Icon lock"									# Icon lock
+TAB_ORIENT="Placement of tabs"						# Placement of tabs
+WINDOW_SIZE="Window size"							# Window size
+ISIZE="Ikon size"									# Icon size
+BG="Backgrounds"									# Backgrounds
+FC="Font color"										# Font color
+FCB="Black"											# Black
+FCW="White"											# White
+MENU_POS="Menu position"							# Menu position
+CENTER="Center"										# Center
+FSCREEN="Full screen"								# Full screen
+CUSTOM="Custom"										# Custom
+FROM_LEFT="From left"								# From left
+FROM_TOP="From top"									# From top
+AUTO_START="Auto start"								# Auto start
+EMPTY_DIR="Empty dir! (drop some .desktop file to the dir)"	# Empty dir! (drop some .desktop file to the dir)
+EXTRA="EXTRA: You can make more tab of the menu, just make some dir in (gsm base dir)/tabs dir, then drop some .desktop file to dirs."
+# "You can make more tab of the menu, just make some dir in (gsm base dir)/tabs dir, then drop some .desktop file to dirs."

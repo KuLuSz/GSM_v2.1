@@ -1,0 +1,26 @@
+#elements to be translated:
+
+QUIT="Kilépés a menüből"							# Close menu
+SAVE="Mentés"										# Save / Menu update
+LEFT="Balra"										# Left
+RIGHT="Jobbra"										# Right
+TOP="Fent"											# Top
+BOTTOM="Lent"										# Bottom
+ILOCK="Ikon zár"									# Icon lock to
+TAB_ORIENT="Fülek"									# Placement of tabs
+WINDOW_SIZE="Ablak méret"							# Window size
+ISIZE="Ikon méret"									# Icon size in pixel
+BG="Hátterek"										# Backgrounds for menu
+FC="Betű szín"										# Font color
+FCB="Fekete"										# Black
+FCW="Fehér"											# White
+MENU_POS="Menü elhelyezés"							# Menu position
+CENTER="Középre"									# Center
+FSCREEN="Teljes képernyő"							# Full screen
+CUSTOM="Egyéni"										# Custom
+FROM_LEFT="Balról"									# From left
+FROM_TOP="Fentről"									# From top
+AUTO_START="Autómatikus indítás"					# Auto start
+EMPTY_DIR="Üres a könyvtár! (dobj pár .desktop fájlt a könyvtárba)" # Empty dir! (drop some .desktop file to the dir)
+EXTRA="EXTRA: Tudsz készíteni több fület, ha készítesz könyvtárakat a (gsm bázis)/tabs könyvtárba, majd a könyvtárakba dobsz pár .desktop fájlt."
+# You can make more tab of the menu, just make some dir in (gsm base dir)/tabs dir, then drop some .desktop file to dirs.
